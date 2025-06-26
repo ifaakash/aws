@@ -72,3 +72,37 @@ resource "aws_iam_role_policy_attachment" "attach_list_s3" {
   role       = aws_iam_role.read_only_user_iam_role.name
   policy_arn = aws_iam_policy.list_s3_policy.arn
 }
+
+# Create IAM role for cloudtrail to assume role
+resource "aws_iam_role" "cloudtrail_role" {
+  name = "cloudtrail-to-cloudwatch"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect    = "Allow",
+      Principal = { Service = "cloudtrail.amazonaws.com" },
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+# Create IAM policy to allow PutLogEvent in cloudwatch log group
+resource "aws_iam_role_policy" "cloudtrail_policy" {
+  name = "CloudTrailPolicy"
+  role = aws_iam_role.cloudtrail_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "${var.cloudwatch_log_group_arn}:*"
+      }
+    ]
+  })
+}
