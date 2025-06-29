@@ -21,9 +21,14 @@ module "cloudtrail" {
   depends_on            = [module.cloudwatch, module.s3, module.iam]
 }
 
+module "sns" {
+  source = "./modules/sns"
+}
+
 module "lambda" {
   source               = "./modules/lambda"
   lambda_exec_role_arn = module.iam.lambda_exec_role_arn
+  sns_topic_arn        = module.sns.sns_topic_arn
 }
 
 module "eventbridge" {

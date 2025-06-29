@@ -10,3 +10,12 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = filebase64sha256(var.filename)
   tags             = var.tags
 }
+
+resource "aws_lambda_function_event_invoke_config" "invoke_sns" {
+  function_name = aws_lambda_function.lambda.function_name
+  destination_config {
+    on_success {
+      destination = var.sns_topic_arn
+    }
+  }
+}

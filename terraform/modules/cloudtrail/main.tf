@@ -8,7 +8,7 @@ resource "aws_cloudtrail" "cloudtrail" {
   cloud_watch_logs_role_arn  = var.cloudwatch_role_arn
   tags                       = var.tags
 
-  # depends_on = [aws_s3_bucket_policy.cloudtrail_policy]
+  depends_on = [aws_s3_bucket_policy.cloudtrail_policy]
 }
 
 data "aws_caller_identity" "current" {}

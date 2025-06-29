@@ -15,6 +15,7 @@ locals {
   iam_user_name = aws_iam_user.read_only_user.name
 }
 
+
 # Create an IAM User
 resource "aws_iam_role" "read_only_user_iam_role" {
   name = "read_only_user_role"
@@ -137,6 +138,12 @@ resource "aws_iam_policy" "permissions" {
             "logs:CreateLogStream",
             "logs:PutLogEvents"
           ],
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "AllowEmailTrigger",
+          "Effect" : "Allow",
+          "Action" : "sns:Publish",
           "Resource" : "*"
         }
       ]
