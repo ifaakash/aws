@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: read
-  workflow: write
+  actions: write
 
 # Add the PAT for the target workflow and pass that in the gh cli command
 jobs:
