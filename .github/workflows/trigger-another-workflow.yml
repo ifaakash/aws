@@ -18,4 +18,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_B_PAT }}
         run: |
-          gh workflow run --repo ifaakash/workflow-trigger --ref develop --workflow target-workflow.yml
+          gh workflow run target-workflow.yml --repo ifaakash/workflow-trigger --ref develop
