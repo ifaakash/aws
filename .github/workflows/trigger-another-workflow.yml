@@ -1,0 +1,16 @@
+name: Workflow A ( Trigger )
+
+on:
+  push:
+    branches: ["**"]
+
+# Add the PAT for the target workflow and pass that in the gh cli command
+jobs:
+  trigger-target-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger target workflow
+        env:
+          GH_TOKEN: ${{ secrets.REPO_B_PAT }}
+        run: |
+          gh workflow run --repo ifaakash/workflow-trigger --ref develop
